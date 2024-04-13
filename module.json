@@ -1,0 +1,72 @@
+{
+  "id": "token-action-hud-13thage",
+  "title": "Token Action HUD 13th Age",
+  "description": "Token Action HUD is a repositionable HUD of actions for a selected token for 13th Age Archmage system",
+  "authors": [
+    {
+      "name": "Dragodoth",
+      "url": "https://github.com/Dragodoth"
+    }
+  ],
+  "url": "#{URL}#",
+  "flags": {},
+  "version": "#{VERSION}#",
+  "compatibility": {
+    "minimum": "11",
+    "verified": "11.315"
+  },
+  "esmodules": [
+    "./scripts/init.js"
+  ],
+  "scripts": [
+  ],
+  "styles": [
+    "./styles/tah-template-style.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "languages/en.json"
+    }
+  ],
+  "packs": [],
+  "relationships": {
+    "systems": [
+      {
+        "id": "archmage",
+        "type": "system",
+        "compatibility": [
+          {
+            "minimum": "1.0.0",
+            "verified": "1.29.2"
+          }
+        ]
+      }
+    ],
+    "requires": [
+      {
+        "id": "token-action-hud-core",
+        "type": "module",
+        "compatibility": [
+          {
+            "minimum": "1.5.0",
+            "maximum": "1.5",
+            "verified": "1.5.0"
+          }
+        ]
+      }
+    ],
+    "optional": [],
+    "flags": {
+      "optional": []
+    }
+  },
+  "socket": false,
+  "manifest": "#{MANIFEST}#",
+  "download": "#{DOWNLOAD}#",
+  "readme": "https://github.com/Dragodoth/fvtt-token-action-hud-13thage#readme",
+  "protected": false,
+  "coreTranslation": false,
+  "library": false
+}

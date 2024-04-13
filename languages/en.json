@@ -1,0 +1,34 @@
+{
+  "tokenActionHud": {
+    "ARCHMAGE": {
+      "ability": "Ability",
+      "cyclic": "Cyclic",
+      "item": "Item",
+      "rollInitiative": "Roll Initiative",
+      "rollRecovery": "Roll Recovery",
+      "condition": "Condition",
+      "conditions": "Conditions",
+      "recoveryDialog": "Dialog",
+      "icon": "Icon",
+      "settings": {
+        "powersGroup": {
+          "hint": "Choose how to group powers on the HUD",
+          "name": "Power groups",
+          "choice": {
+              "powerType": "Type",
+              "powerUsage": "Usage",
+              "actionType": "Action"
+          }
+        },
+        "abbreviateAbilities": {
+                  "hint": "Display ability names as a three-character abbreviation",
+                  "name": "Abbreviate Ability Names"
+        },
+        "showUsedItems": {
+          "hint": "Choose whether to show used powers on the HUD",
+          "name": "Show Used Powers"
+        }
+      }
+    }
+  }
+}

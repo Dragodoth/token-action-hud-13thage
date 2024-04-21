@@ -29,11 +29,11 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 return
             }
 
-            const controlledTokens = canvas.tokens.controlled
-                .filter((token) => knownCharacters.includes(token.actor?.type))
+            //const controlledTokens = canvas.tokens.controlled
+                //.filter((token) => knownCharacters.includes(token.actor?.type))
 
             // If multiple actors are selected
-            for (const token of controlledTokens) {
+            for (const token of canvas.tokens.controlled) {
                 const actor = token.actor
                 await this.#handleAction(event, actor, token, actionTypeId, actionId)
             }
@@ -91,7 +91,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                     this.#handleItemAction(actor, actionId)
                     break
                 case 'utility':
-                    this.#handleUtilityAction(event, actor, token, actionId)
+                    this.#handleUtilityAction(actor, token, actionId)
                     break
                 case 'ability':
                     this.#handleAbilityAction(actor, actionId)
@@ -380,7 +380,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @param {object} token    The token
          * @param {string} actionId The action id
          */
-        async #handleUtilityAction(event, actor, token, actionId) {
+        async #handleUtilityAction(actor, token, actionId) {
             switch (actionId) {
                 case 'endTurn':
                     if (game.combat?.current?.tokenId === token.id) {

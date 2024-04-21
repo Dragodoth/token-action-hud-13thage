@@ -95,6 +95,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         #buildMultipleTokenActions () {
             this.#buildCombat()
             this.#buildConditions()
+            this.#buildRecoveries()
             this.#buildRests()
             this.#buildSaves()
         }

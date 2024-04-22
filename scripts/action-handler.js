@@ -790,10 +790,12 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 if (this.tooltipsSetting === 'nameOnly') return name
                 const description = data.system?.description?.value
                 const properties = Object.entries(data?.system).filter(entry => entry[1]?.value && TOOLTIP_PROPERTIES.includes(entry[0])).map(entry => entry[1].value)
+                const regex = /hit[0-9]+/i
                 const traits = Object.entries(data?.system).filter(entry => entry[1]?.value && ![...TOOLTIP_PROPERTIES, ...NOT_USED_TOOLTIP_TRAITS].includes(entry[0])).map(([traitName, traitText]) =>[
-                        traitName,
+                        (regex.test(traitName)) ? traitText?.name : traitName,
                         traitText?.value
                     ])
+                    console.log(traits)
                 const feats = (data.system?.feats) ? Object.values(data.system.feats).filter(feat => feat.isActive.value).map(feat => [feat.tier.value,feat.description.value])
                      : []
                 const range = data.system?.range?.value
@@ -822,9 +824,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 const rangeHtml = tooltipData?.range
                     ? `<em>${tooltipData.range}</em>`
                     : ''
-                    
                 const traitsHtmlInline = tooltipData?.traits
-                ? `<div class="tah-tags">${rangeHtml}${tooltipData.traits.map(([traitName, traitText]) => `<div><span class="tah-tag"><strong>${coreModule.api.Utils.i18n("ARCHMAGE.CHAT." + traitName)}:</strong> ${traitText}</span></div>`).join('')}</div>`
+                    ? `<div class="tah-tags">${rangeHtml}${tooltipData.traits.map(([traitName, traitText]) => `<div><span class="tah-tag"><strong>${(coreModule.api.Utils.i18n("ARCHMAGE.CHAT." + traitName).includes("ARCHMAGE.CHAT.")) ? traitName : coreModule.api.Utils.i18n("ARCHMAGE.CHAT." + traitName)}:</strong> ${traitText}</span></div>`).join('')}</div>`
                     : ''
                 
                 const diceFormulaMode = actor?.flags?.archmage?.diceFormulaMode ?? 'short'

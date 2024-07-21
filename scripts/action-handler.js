@@ -3,7 +3,6 @@
 import { ACTION_TYPE, ITEM_TYPE, ACTION_NAME, TOOLTIP_PROPERTIES, NOT_USED_TOOLTIP_TRAITS } from './constants.js'
 import { Utils } from './utils.js'
 
-
 export let ActionHandler = null
 
 Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
@@ -428,11 +427,15 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                         //const info2 = info?.info2
                         //const info3 = info?.info3
                         
+                        const tooltipData = this.#getTooltipData(itemData)
+                        const tooltip = this.#getTooltip(tooltipData, this.actor)
+                        
                         return {
                             id,
                             //info1,
                             //info2,
                             //info3,
+                            tooltip,
                             img,
                             name,
                             listName,
@@ -795,7 +798,6 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                         (regex.test(traitName)) ? traitText?.name : traitName,
                         traitText?.value
                     ])
-                    console.log(traits)
                 const feats = (data.system?.feats) ? Object.values(data.system.feats).filter(feat => feat.isActive.value).map(feat => [feat.tier.value,feat.description.value])
                      : []
                 const range = data.system?.range?.value
@@ -814,12 +816,12 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 if (typeof tooltipData === 'string') return tooltipData
 
                 const name = coreModule.api.Utils.i18n(tooltipData.name)
-
                 if (this.tooltipsSetting === 'nameOnly') return name
 
                 const nameHtml = `<h3>${name}</h3>`
-
                 const description = tooltipData?.description ?? ''
+                const diceFormulaMode = actor?.flags?.archmage?.diceFormulaMode ?? 'short'
+                if (!description) this.#wrapRolls(description, [], diceFormulaMode, this.actor.getRollData())
                 
                 const rangeHtml = tooltipData?.range
                     ? `<em>${tooltipData.range}</em>`
@@ -827,30 +829,21 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 const traitsHtmlInline = tooltipData?.traits
                     ? `<div class="tah-tags">${rangeHtml}${tooltipData.traits.map(([traitName, traitText]) => `<div><span class="tah-tag"><strong>${(coreModule.api.Utils.i18n("ARCHMAGE.CHAT." + traitName).includes("ARCHMAGE.CHAT.")) ? traitName : coreModule.api.Utils.i18n("ARCHMAGE.CHAT." + traitName)}:</strong> ${traitText}</span></div>`).join('')}</div>`
                     : ''
-                
-                const diceFormulaMode = actor?.flags?.archmage?.diceFormulaMode ?? 'short'
-                
                 const traitsHtml = this.#wrapRolls(traitsHtmlInline, [], diceFormulaMode, this.actor.getRollData())
                 
                 const levelHtml = tooltipData?.level ? `<span class="tah-property">${coreModule.api.Utils.i18n("ARCHMAGE.level")} ${tooltipData.level}</span>` : ''
-                
                 const propertiesHtml = tooltipData?.properties
                     ? `<div class="tah-properties">${tooltipData.properties.map(property => `<span class="tah-property">${coreModule.api.Utils.i18n("ARCHMAGE." + property)}</span>`).join('')}${levelHtml}</div>`
                     : ''
-                
                 const featsHtmlInline = tooltipData?.feats
                 ? `${tooltipData.feats.map(([featTier, featText]) => `<div class="tah-tags tah-tag-feat"><span class="tah-tag"><strong>${coreModule.api.Utils.i18n("ARCHMAGE.CHAT." + featTier)}:</strong> ${featText}</span></div>`).join('')}`
                     : ''
-                
-                
-                
                 const featsHtml = this.#wrapRolls(featsHtmlInline, [], diceFormulaMode, this.actor.getRollData())
                 
                 const headerTags = (traitsHtml || featsHtml) ? `<div class="tah-tags-wrapper">${traitsHtml}${featsHtml}</div>` : ''
-
-                if (!description && !traitsHtml && !featsHtml) return name
-                    
-                return `<div>${nameHtml}${headerTags}${description}${propertiesHtml}</div>`
+                const tooltipHtml = `<div>${nameHtml}${headerTags}${description}${propertiesHtml}</div>`
+                if (!tooltipHtml) return name
+                return tooltipHtml
             }
        
             /**
@@ -870,6 +863,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         /**
          * Replace inline rolls with alternate formatting and wrap with an additional
          * span tag for formatting.
+         *
+         * Taken from archmage/src/vue/methods/Helpers.js
          *
          * @param {string} text String to run replacements on.
          * @param {array} replacements Array of replacements. Each array item should be

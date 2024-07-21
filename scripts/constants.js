@@ -39,7 +39,7 @@ export const ACTION_NAME = {
     move: 'MOV',
     quick: 'QCK',
     free: 'FREE',
-    interupt: 'INT',
+    interrupt: 'INT',
     'at-will': 'ARCHMAGE.at-will',
     'once-per-battle': 'ARCHMAGE.once-per-battle',
     daily: 'ARCHMAGE.daily',
@@ -47,13 +47,6 @@ export const ACTION_NAME = {
     cyclic: 'tokenActionHud.ARCHMAGE.cyclic'
 }
 
-/**
- * Action usage names
- *
-export const ACTION_Usage_NAME = {
-
-}
-*/
 /**
  * Groups
  */
@@ -87,7 +80,7 @@ export const GROUP = {
     move: { id: 'move', name: 'ARCHMAGE.move', type: 'system' },
     quick: { id: 'quick', name: 'ARCHMAGE.quick', type: 'system' },
     free: { id: 'free', name: 'ARCHMAGE.free', type: 'system' },
-    interupt: { id: 'interupt', name: 'ARCHMAGE.interupt', type: 'system' },
+    interrupt: { id: 'interrupt', name: 'ARCHMAGE.interrupt', type: 'system' },
     
     other: { id: 'other', name: 'ARCHMAGE.others', type: 'system' },
     
@@ -122,9 +115,12 @@ export const ITEM_TYPE = {
     move: { groupId: 'move' },
     quick: { groupId: 'quick' },
     free: { groupId: 'free' },
-    interupt: { groupId: 'interupt' }
+    interrupt: { groupId: 'interrupt' }
 }
 
+/**
+ * Properties shown in power tooltip
+ */
 export const TOOLTIP_PROPERTIES = [
     'actionType',
     'powerUsage',
@@ -132,6 +128,9 @@ export const TOOLTIP_PROPERTIES = [
     'powerType'
 ]
 
+/**
+ * Traits not shown in power tolltips
+ */
 export const NOT_USED_TOOLTIP_TRAITS = [
     'description',
     'embeddedMacro',

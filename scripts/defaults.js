@@ -39,7 +39,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                     { ...groups.move, nestId: 'powers_move' },
                     { ...groups.quick, nestId: 'powers_quick' },
                     { ...groups.free, nestId: 'powers_free' },
-                    { ...groups.interupt, nestId: 'powers_interupt' },
+                    { ...groups.interrupt, nestId: 'powers_interrupt' },
                     
                     { ...groups.other, nestId: 'powers_other' },
                 ]
